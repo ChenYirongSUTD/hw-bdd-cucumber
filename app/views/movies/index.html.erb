@@ -2,6 +2,7 @@
 <h2>All Movies</h2>
 
 <%#  Part 2: Start here... %>
+
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
   Include:
   <% @all_ratings.each do |rating| %>
@@ -15,9 +16,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th><%= link_to "Movie Title", movies_path(sort: "title", ratings: @ratings_to_show_hash.to_h{|element| [element,1]}), id: "title_header", class: (@column == "title" ? "hilite bg-warning" : "") %></th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th><%= link_to "Release Date", movies_path(sort: "release_date", ratings: @ratings_to_show_hash.to_h{|element| [element,1]}), id: "release_date_header", class: (@column == "release_date" ? "hilite bg-warning" : "") %></th>
       <th>More Info</th>
     </tr>
   </thead>
