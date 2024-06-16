@@ -8,14 +8,18 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings  # Get all possible ratings from the model
-    @ratings_to_show_hash = (params[:ratings] || {}).keys  # Get selected ratings or default to empty
-    
-    # Sorting logic
-    @column = params[:sort] || session[:sort] || "id"  # Default to id if no sorting is specified
-    # Update session to persist sorting preferences
-    session[:sort] = @column
+    # If no ratings or sorting params, use session values
+    if params[:ratings].nil? && params[:sort].nil?
+      @ratings_to_show_hash = session[:ratings] || [] # Use an array for ratings
+      @column = session[:sort] || "id"  # Default to id if not set in session
+    else    
+      @ratings_to_show_hash = (params[:ratings] || session[:ratings] || {}).keys  # Get selected ratings or default to empty
+      @column = params[:sort] || "id"  # Default to id if no sorting is specified
+      # Update session to persist sorting and filtering preferences
+      session[:sort] = @column
+      session[:ratings] = @ratings_to_show_hash
+    end
     @movies = Movie.with_ratings(@ratings_to_show_hash).order(@column)
-
   end
 
   def new
