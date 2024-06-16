@@ -1,1 +1,1 @@
-your-app.cloudrun.com
+chips52-mipjqyowia-as.a.run.app
